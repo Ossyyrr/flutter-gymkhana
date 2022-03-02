@@ -10,7 +10,10 @@ class MyQRPage extends StatelessWidget {
       //   preferredSize: Size.fromHeight(100.0), // here the desired height
       //   child: CustomAppBar(),
       // ),
-      appBar: AppBar(title: const Text('My QRs')),
+      appBar: AppBar(
+        title: const Text('My QRs'),
+        centerTitle: true,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.pushNamed(context, 'create');

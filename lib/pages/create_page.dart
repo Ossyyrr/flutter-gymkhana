@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scanqr/pages/widgets/custom_qr_image.dart';
 
 class CreatePage extends StatelessWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -11,7 +12,10 @@ class CreatePage extends StatelessWidget {
       //   child: CustomAppBar(),
       // ),
       appBar: AppBar(title: const Text('Create')),
-      body: const SafeArea(child: Text('create')),
+      body: const SafeArea(
+          child: CustomQrImage(
+        data: "https://pub.dev/packages/qr_flutter",
+      )),
     );
   }
 }

@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:scanqr/models/scan_model.dart';
+import 'package:provider/provider.dart';
 import 'package:scanqr/pages/widgets/custom_qr_image.dart';
+import 'package:scanqr/pages/widgets/custom_text_form_field.dart';
+import 'package:scanqr/providers/create_qr_provider.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -15,12 +17,13 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   final Completer<GoogleMapController> _controller = Completer();
+
   final Set<Marker> _markers = <Marker>{};
   LatLng currentLatLng = const LatLng(37.43296265331129, -122.08832357078792);
-  ScannValueModel scannValueModel = ScannValueModel(geo: [451, -2.555], title: 'TITULO', description: 'descripción');
 
   @override
   Widget build(BuildContext context) {
+    final createQRProvider = Provider.of<CreateQRProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create'),
@@ -31,7 +34,7 @@ class _CreatePageState extends State<CreatePage> {
         children: [
           SizedBox(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height / 2.2,
+            height: MediaQuery.of(context).size.height / 2.4,
             child: GoogleMap(
               myLocationButtonEnabled: false,
               mapType: MapType.normal,
@@ -51,30 +54,41 @@ class _CreatePageState extends State<CreatePage> {
               },
             ),
           ),
-          CustomQrImage(
-            data: scannValueModel,
-            /* {
-              "geo": [451, -2.555],
-              "title": "TITULO",
-              "description": "sdfasdfsadf"
-            }.toString(),*/
-            //_latLngConverter(),
-            id: '152',
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(8),
+              children: <Widget>[
+                CustomTextFormField(
+                  hintText: 'what title would you like to put?',
+                  labelText: 'Title',
+                  onChanged: (v) => createQRProvider.title = v,
+                ),
+                CustomTextFormField(
+                  hintText: 'You can write a description or give a hint.',
+                  labelText: 'Description',
+                  onChanged: (v) => createQRProvider.description = v,
+                ),
+                CustomQrImage(
+                  data: createQRProvider.scannValueModel,
+                  id: '',
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    log('guardar en DB');
+                  },
+                  child: const Text('SAVE'),
+                ),
+              ],
+            ),
           ),
         ],
       )),
     );
   }
 
-  // String _latLngConverter() {
-  //   final lat = currentLatLng.latitude;
-  //   final lng = currentLatLng.longitude;
-  //   final geoString = 'geo:' + lat.toString() + ',' + lng.toString();
-  //   log(geoString);
-  //   return geoString;
-  // }
-
   void _handleTap(LatLng point) {
+    final createQRProvider = Provider.of<CreateQRProvider>(context, listen: false);
+
     _markers.clear();
     _markers.add(Marker(
       markerId: MarkerId(point.toString()),
@@ -84,7 +98,8 @@ class _CreatePageState extends State<CreatePage> {
       ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
     ));
-    scannValueModel.geo = [point.latitude, point.longitude];
+    createQRProvider.scannValueModel.geo = [point.latitude, point.longitude];
+
     setState(() {});
   }
 }

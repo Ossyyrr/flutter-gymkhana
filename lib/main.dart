@@ -4,6 +4,7 @@ import 'package:scanqr/pages/create_page.dart';
 import 'package:scanqr/pages/home_page.dart';
 import 'package:scanqr/pages/mapa_page.dart';
 import 'package:scanqr/pages/my_qr_page.dart';
+import 'package:scanqr/providers/create_qr_provider.dart';
 import 'package:scanqr/providers/scan_list_provider.dart';
 import 'package:scanqr/providers/ui_provider.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UiProvider()),
         ChangeNotifierProvider(create: (_) => ScanListProvider()),
+        ChangeNotifierProvider(create: (_) => CreateQRProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

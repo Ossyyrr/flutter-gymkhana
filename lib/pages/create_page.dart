@@ -28,7 +28,7 @@ class _CreatePageState extends State<CreatePage> {
         children: [
           SizedBox(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 2.2,
             child: GoogleMap(
               myLocationButtonEnabled: false,
               mapType: MapType.normal,
@@ -50,6 +50,7 @@ class _CreatePageState extends State<CreatePage> {
           ),
           CustomQrImage(
             data: _latLngConverter(),
+            id: '152',
           ),
         ],
       )),

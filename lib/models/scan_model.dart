@@ -6,13 +6,7 @@ ScannModel scannModelFromJson(String str) => ScannModel.fromJson(json.decode(str
 String scannModelToJson(ScannModel data) => json.encode(data.toJson());
 
 class ScannModel {
-  ScannModel({this.id, this.tipo, required this.valor}) {
-    // if (valor.contains('http')) {
-    //   tipo = 'http';
-    // } else {
-    //   tipo = 'geo';
-    // }
-  }
+  ScannModel({this.id, this.tipo, required this.valor});
 
   int? id;
   String? tipo;
@@ -20,11 +14,6 @@ class ScannModel {
 
   LatLng getLatLng() {
     return LatLng(valor.geo[0], valor.geo[1]);
-
-    // final latLng = valor.substring(4).split(',');
-    // final lat = double.parse(latLng[0]);
-    // final lng = double.parse(latLng[1]);
-    // return LatLng(lat, lng);
   }
 
   factory ScannModel.fromJson(Map<String, dynamic> json) => ScannModel(
@@ -45,9 +34,9 @@ String scannValueModelToJson(ScannValueModel data) => json.encode(data.toJson())
 
 class ScannValueModel {
   ScannValueModel({
-    required this.geo,
-    required this.title,
-    required this.description,
+    this.geo = const [1.1, -2.2],
+    this.title = '',
+    this.description = '',
   });
 
   List<double> geo;

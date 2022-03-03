@@ -4,8 +4,7 @@ import 'package:scanqr/models/scan_model.dart';
 class CreateQRProvider extends ChangeNotifier {
   String _title = '';
   String _description = '';
-  // TODO Quitar required innecesarios
-  ScannValueModel _scannValueModel = ScannValueModel(geo: [451, -2.555], title: 'TITULO', description: 'descripción');
+  ScannValueModel _scannValueModel = ScannValueModel();
 
   String get title {
     return _title;

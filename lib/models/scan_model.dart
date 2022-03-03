@@ -7,36 +7,36 @@ String scannModelToJson(ScannModel data) => json.encode(data.toJson());
 
 class ScannModel {
   ScannModel({this.id, this.tipo, required this.valor}) {
-    if (valor.contains('http')) {
-      tipo = 'http';
-    } else {
-      tipo = 'geo';
-    }
+    // if (valor.contains('http')) {
+    //   tipo = 'http';
+    // } else {
+    //   tipo = 'geo';
+    // }
   }
 
   int? id;
   String? tipo;
-  String valor;
+  ScannValueModel valor;
 
   LatLng getLatLng() {
-//return LatLng(valor.geo[0], valor.geo[1]);
+    return LatLng(valor.geo[0], valor.geo[1]);
 
-    final latLng = valor.substring(4).split(',');
-    final lat = double.parse(latLng[0]);
-    final lng = double.parse(latLng[1]);
-    return LatLng(lat, lng);
+    // final latLng = valor.substring(4).split(',');
+    // final lat = double.parse(latLng[0]);
+    // final lng = double.parse(latLng[1]);
+    // return LatLng(lat, lng);
   }
 
   factory ScannModel.fromJson(Map<String, dynamic> json) => ScannModel(
         id: json["id"],
         tipo: json["tipo"],
-        valor: json["valor"],
+        valor: ScannValueModel.fromJson(jsonDecode(json["valor"])),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "tipo": tipo,
-        "valor": valor,
+        "valor": jsonEncode(valor.toJson()),
       };
 }
 

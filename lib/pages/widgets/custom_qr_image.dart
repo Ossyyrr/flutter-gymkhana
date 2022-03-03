@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class CustomQrImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log('data: ');
-    log(data.toJson().toString());
+    log(jsonEncode(data.toJson()));
     const qrColor = Color.fromARGB(255, 36, 36, 36);
     const size = 200.0;
     return Stack(
@@ -27,7 +28,7 @@ class CustomQrImage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               QrImage(
-                data: data.toJson().toString(),
+                data: jsonEncode(data.toJson()),
                 version: QrVersions.auto,
                 size: size,
                 // padding: const EdgeInsets.all(12),

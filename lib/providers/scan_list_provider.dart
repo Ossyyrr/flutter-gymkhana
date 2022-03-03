@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:scanqr/providers/db_provider.dart';
 
@@ -6,14 +9,16 @@ class ScanListProvider extends ChangeNotifier {
   String tipoSeleccionado = 'http';
 
   Future<ScannModel> nuevoScan(String valor) async {
-    final nuevoScan = ScannModel(valor: valor);
+    log('valor: ');
+    log(valor);
+    final nuevoScan = ScannModel(valor: ScannValueModel.fromJson(await jsonDecode(valor)));
     final id = await DBProvider.db.nuevoScan(nuevoScan);
     // Asigno el id de la DB al modelo
     nuevoScan.id = id;
-    if (tipoSeleccionado == nuevoScan.tipo) {
-      scans.add(nuevoScan);
-      notifyListeners();
-    }
+    // if (tipoSeleccionado == nuevoScan.tipo) {
+    scans.add(nuevoScan);
+    notifyListeners();
+    //  }
     return nuevoScan;
   }
 

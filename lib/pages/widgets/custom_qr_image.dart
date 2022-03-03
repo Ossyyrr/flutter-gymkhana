@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:scanqr/models/scan_model.dart';
 
 class CustomQrImage extends StatelessWidget {
   const CustomQrImage({Key? key, required this.data, required this.id}) : super(key: key);
-  final String data;
+  final ScannValueModel data;
   final String id;
   @override
   Widget build(BuildContext context) {
+    log('data: ');
+    log(data.toJson().toString());
     const qrColor = Color.fromARGB(255, 36, 36, 36);
     const size = 200.0;
     return Stack(
@@ -22,7 +27,7 @@ class CustomQrImage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               QrImage(
-                data: data,
+                data: data.toJson().toString(),
                 version: QrVersions.auto,
                 size: size,
                 // padding: const EdgeInsets.all(12),

@@ -19,7 +19,7 @@ class CustomAppBar extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, 'my_qr');
+            Navigator.pushNamed(context, 'create');
           },
           icon: const Icon(Icons.add_box_outlined),
         ),

@@ -3,6 +3,7 @@
    <application
         android:label="scanqr"
         android:name="${applicationName}"
+        android:requestLegacyExternalStorage="true" 
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyBJKnNSozeYuWF-DIPOKR5JMpc1tgeFBPI"/>

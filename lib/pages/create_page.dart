@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -92,18 +93,27 @@ class _CreatePageState extends State<CreatePage> {
                           children: [
                             CustomIconButton(
                               icon: Icons.download,
-                              onPressed: () {
+                              onPressed: () async {
                                 log('DOWNLOAD');
+
+                                screenshotController
+                                    .capture(delay: const Duration(milliseconds: 50))
+                                    .then((capturedImage) async {
+                                  log('WIDGET CAPTURADO');
+                                  downloadCapturedWidget(context, capturedImage!);
+                                }).catchError((onError) {
+                                  print(onError);
+                                });
                               },
                             ),
                             CustomIconButton(
                               icon: Icons.share,
                               onPressed: () {
                                 screenshotController
-                                    .capture(delay: const Duration(milliseconds: 10))
+                                    .capture(delay: const Duration(milliseconds: 50))
                                     .then((capturedImage) async {
-                                  log('IMAGEN CAPTURADA');
-                                  ShareCapturedWidget(context, capturedImage!);
+                                  log('WIDGET CAPTURADO');
+                                  shareCapturedWidget(context, capturedImage!);
                                 }).catchError((onError) {
                                   print(onError);
                                 });
@@ -130,11 +140,24 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  Future<void> ShareCapturedWidget(BuildContext context, Uint8List capturedImage) async {
+  Future<void> downloadCapturedWidget(BuildContext context, Uint8List capturedImage) async {
     final directory = (await getExternalStorageDirectory())!.path;
     File imgFile = File('$directory/screenshot.png');
-    imgFile.writeAsBytes(capturedImage);
+    await imgFile.writeAsBytes(capturedImage);
+    await GallerySaver.saveImage(
+      '$directory/screenshot.png',
+      albumName: 'Downloads',
+    ).then((bool? success) {
+      log(success.toString());
+    }).catchError((error) {
+      log('ERROR GALLERYSAVER image: ' + error.toString());
+    });
+  }
 
+  Future<void> shareCapturedWidget(BuildContext context, Uint8List capturedImage) async {
+    final directory = (await getExternalStorageDirectory())!.path;
+    File imgFile = File('$directory/screenshot.png');
+    await imgFile.writeAsBytes(capturedImage);
     Share.shareFiles(['$directory/screenshot.png'], text: 'Great picture');
   }
 

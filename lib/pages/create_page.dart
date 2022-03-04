@@ -119,18 +119,18 @@ class _CreatePageState extends State<CreatePage> {
                                 });
                               },
                             ),
+                            CustomIconButton(
+                              icon: Icons.save_as,
+                              onPressed: () async {
+                                log('guardar en DB');
+                                final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
+                                await scanListProvider.nuevoScan(jsonEncode(createQRProvider.scannValueModel));
+                                Navigator.pop(context);
+                              },
+                            ),
                           ],
                         )),
                   ],
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    log('guardar en DB');
-                    final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
-                    await scanListProvider.nuevoScan(jsonEncode(createQRProvider.scannValueModel));
-                    Navigator.pop(context);
-                  },
-                  child: const Text('SAVE'),
                 ),
               ],
             ),
@@ -168,9 +168,9 @@ class _CreatePageState extends State<CreatePage> {
     _markers.add(Marker(
       markerId: MarkerId(point.toString()),
       position: point,
-      infoWindow: const InfoWindow(
-        title: 'I am a marker',
-      ),
+      // infoWindow: const InfoWindow(
+      //   title: 'I am a marker',
+      // ),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
     ));
     createQRProvider.scannValueModel.geo = [point.latitude, point.longitude];

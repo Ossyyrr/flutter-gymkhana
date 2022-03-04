@@ -25,9 +25,16 @@ class ScanTiles extends StatelessWidget {
         itemBuilder: (_, i) {
           return Dismissible(
             key: UniqueKey(),
-            background: Container(color: Colors.redAccent),
+            background: Container(color: Colors.greenAccent),
+            secondaryBackground: Container(color: Colors.redAccent),
             onDismissed: (DismissDirection direction) {
-              scanListProvider.borrarScanPorId(scans[i].id!);
+              if (direction == DismissDirection.startToEnd) {
+                log('verde');
+                // TODO EDIT
+              } else {
+                log('rojo');
+                scanListProvider.deleteScanById(scans[i].id!);
+              }
             },
             child: ListTile(
               leading: Icon(

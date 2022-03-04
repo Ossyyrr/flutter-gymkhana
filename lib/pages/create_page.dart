@@ -146,7 +146,7 @@ class _CreatePageState extends State<CreatePage> {
     await imgFile.writeAsBytes(capturedImage);
     await GallerySaver.saveImage(
       '$directory/screenshot.png',
-      albumName: 'Downloads',
+      albumName: 'QR',
     ).then((bool? success) {
       log(success.toString());
     }).catchError((error) {
@@ -158,7 +158,7 @@ class _CreatePageState extends State<CreatePage> {
     final directory = (await getExternalStorageDirectory())!.path;
     File imgFile = File('$directory/screenshot.png');
     await imgFile.writeAsBytes(capturedImage);
-    Share.shareFiles(['$directory/screenshot.png'], text: 'Great picture');
+    Share.shareFiles(['$directory/screenshot.png'], text: 'TITULO');
   }
 
   void _handleTap(LatLng point) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:scanqr/pages/widgets/custom_qr_image.dart';
 import 'package:scanqr/pages/widgets/custom_text_form_field.dart';
 import 'package:scanqr/providers/create_qr_provider.dart';
+import 'package:scanqr/providers/scan_list_provider.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -73,8 +75,10 @@ class _CreatePageState extends State<CreatePage> {
                   id: '',
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     log('guardar en DB');
+                    final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
+                    await scanListProvider.nuevoScan(jsonEncode(createQRProvider.scannValueModel));
                   },
                   child: const Text('SAVE'),
                 ),

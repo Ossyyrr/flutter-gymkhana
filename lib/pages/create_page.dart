@@ -1,14 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scanqr/pages/widgets/custom_qr_image.dart';
 import 'package:scanqr/pages/widgets/custom_text_form_field.dart';
 import 'package:scanqr/providers/create_qr_provider.dart';
 import 'package:scanqr/providers/scan_list_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -19,7 +24,7 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   final Completer<GoogleMapController> _controller = Completer();
-
+  ScreenshotController screenshotController = ScreenshotController();
   final Set<Marker> _markers = <Marker>{};
   LatLng currentLatLng = const LatLng(37.43296265331129, -122.08832357078792);
 
@@ -70,10 +75,28 @@ class _CreatePageState extends State<CreatePage> {
                   labelText: 'Description',
                   onChanged: (v) => createQRProvider.description = v,
                 ),
-                CustomQrImage(
-                  data: createQRProvider.scannValueModel,
-                  id: '',
+                Screenshot(
+                  controller: screenshotController,
+                  child: CustomQrImage(
+                    data: createQRProvider.scannValueModel,
+                    id: '',
+                  ),
                 ),
+                ElevatedButton(
+                    // WIP
+                    onPressed: () {
+                      screenshotController.capture(delay: const Duration(milliseconds: 10)).then((capturedImage) async {
+                        log('IMAGEN CAPTURADA');
+                        ShareCapturedWidget(context, capturedImage!);
+                      }).catchError((onError) {
+                        print(onError);
+                      });
+                    },
+                    // onPressed: () {
+
+                    //   Share.share('check out my website https://example.com', subject: 'Look what I made!');
+                    // },
+                    child: const Text('Share')),
                 ElevatedButton(
                   onPressed: () async {
                     log('guardar en DB');
@@ -89,6 +112,31 @@ class _CreatePageState extends State<CreatePage> {
         ],
       )),
     );
+  }
+
+  Future<void> ShareCapturedWidget(BuildContext context, Uint8List capturedImage) async {
+    final directory = (await getExternalStorageDirectory())!.path;
+    File imgFile = File('$directory/screenshot.png');
+    imgFile.writeAsBytes(capturedImage);
+
+    Share.shareFiles(['$directory/screenshot.png'], text: 'Great picture');
+
+    // Share.shareFile(File('$directory/screenshot.png'),
+    //     subject: 'Screenshot + Share',
+    //     text: 'Hey, check it out the sharefiles repo!',
+    //     sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+    //  Share.shareFiles(['${directory.path}/image.jpg'], text: 'Great picture');
+    //final file = File.fromRawPath(capturedImage);
+    // return showDialog(
+    //   useSafeArea: false,
+    //   context: context,
+    //   builder: (context) => Scaffold(
+    //     appBar: AppBar(
+    //       title: const Text("Captured widget screenshot"),
+    //     ),
+    //     body: Center(child: capturedImage != null ? Image.memory(capturedImage) : Container()),
+    //   ),
+    // );
   }
 
   void _handleTap(LatLng point) {

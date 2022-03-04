@@ -22,8 +22,11 @@ class CustomQrImage extends StatelessWidget {
           margin: const EdgeInsets.all(16),
           padding: const EdgeInsets.all(4),
           width: size + 30,
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: qrColor, width: 2)),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: qrColor, width: 2),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

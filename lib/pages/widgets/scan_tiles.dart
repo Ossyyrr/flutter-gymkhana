@@ -5,8 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:scanqr/providers/scan_list_provider.dart';
 
 class ScanTiles extends StatelessWidget {
-  const ScanTiles({Key? key, required this.tipo}) : super(key: key);
-  final String tipo;
+  const ScanTiles({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class ScanTiles extends StatelessWidget {
             },
             child: ListTile(
               leading: Icon(
-                tipo == 'http' ? Icons.home_outlined : Icons.map,
+                Icons.map,
                 color: Theme.of(context).primaryColor,
               ),
               title: Text(scans[i].valor.title),

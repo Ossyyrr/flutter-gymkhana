@@ -6,6 +6,6 @@ class MapasPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ScanTiles(tipo: 'geo');
+    return const ScanTiles();
   }
 }

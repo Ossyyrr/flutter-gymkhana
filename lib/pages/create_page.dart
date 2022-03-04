@@ -79,6 +79,7 @@ class _CreatePageState extends State<CreatePage> {
                     log('guardar en DB');
                     final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
                     await scanListProvider.nuevoScan(jsonEncode(createQRProvider.scannValueModel));
+                    Navigator.pop(context);
                   },
                   child: const Text('SAVE'),
                 ),

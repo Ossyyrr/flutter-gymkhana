@@ -41,7 +41,6 @@ class ScanTiles extends StatelessWidget {
                 color: Colors.grey,
               ),
               onTap: () {
-                //    print(scans[i].id.toString());
                 Navigator.pushNamed(context, 'mapa', arguments: scans[i]);
               },
             ),
